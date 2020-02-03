@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from base import Base
+from pyinformehw.dao.base import Base
 
 class User(Base):
     __tablename__ = 'user'
