@@ -4,42 +4,46 @@ from pyinformehw.dao.base import Base
 class ComputerSystem(Base):
     __tablename__ = 'computersystem'
 
-    columns = [0,17,18,14,9,17,20,20,14,25]
+    mapa_campos = {}
 
     id = Column(Integer, primary_key=True)
-    caption = Column(String(columns[1]) )
-    description = Column(String(columns[2]) )
-    manufacturer = Column(String(columns[3]) )
-    model = Column(String(columns[4]) )
-    name = Column(String(columns[5]) )
-    number_of_processors  = Column(String(columns[6]) )
-    primary_owner_name = Column(String(columns[7]) )
-    system_type = Column(String(columns[8]) )
-    user_name = Column(String(columns[9]) )         
+    computer = Column(String(20)) 
+    caption = Column(String(20))
+    description = Column(String(40))
+    manufacturer = Column(String(20))
+    model = Column(String(40))
+    name = Column(String(20))
+    number_of_processors  = Column(Integer)
+    primary_owner_name = Column(String(20))
+    system_type = Column(String(20))
+    user_name = Column(String(40))         
 
-    def __init__(self, name, complet_name):
-        self.name = name
-        self.complet_name = complet_name
+    def __init__(self, computer, columns):
+        self.computer = computer
+        self.mapa_campos = columns
 
     def leer_linea(self, linea):
-        i = 1
-        self.caption = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        #print(sum(self.columns[0:i]))
-        #print(sum(self.columns[0:i+1]))
-        self.description = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.manufacturer = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.model = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.name = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.number_of_processors = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.primary_owner_name = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.system_type = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
-        i += 1
-        self.user_name = linea[sum(self.columns[0:i]):sum(self.columns[0:i+1])]
+        pos_anterior = 0
+        for campo,pos in self.mapa_campos.items():
+            #print(campo, linea[pos_anterior:pos])
+            valor = linea[pos_anterior:pos].strip()
+            pos_anterior = pos
+            if campo == 'Caption':
+                self.caption = valor
+            elif campo == 'Description':
+                self.description = valor
+            elif campo == 'Manufacturer':
+                self.manufacturer = valor
+            elif campo == 'Model':
+                self.model = valor
+            elif campo == 'Name':
+                self.name = valor
+            elif campo == 'NumberOfProcessors':
+                self.number_of_processors = int(valor)
+            elif campo == 'PrimaryOwnerName':
+                self.primary_owner_name = valor
+            elif campo == 'SystemType':
+                self.system_type = valor
+            elif campo == 'UserName':
+                self.user_name = valor
 
