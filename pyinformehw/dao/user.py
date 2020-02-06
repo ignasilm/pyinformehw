@@ -8,6 +8,7 @@ class User(Base):
     complet_name = Column(String(100))
     email = Column(String(100))
     num_empleado = Column(Integer)
+    computer = Column(String(20))
 
     def __init__(self, name, complet_name):
         self.name = name

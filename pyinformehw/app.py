@@ -3,24 +3,30 @@ from os import chdir
 import codecs
 from pyinformehw.dao.base import Session, engine, Base
 from pyinformehw.dao.user import User
-from pyinformehw.dao.computersystem import ComputerSystem
+from pyinformehw.dao.computersystem import Computersystem
+from pyinformehw.dao.baseboard import Baseboard
+from pyinformehw.dao.cpu import Cpu
+from pyinformehw.dao.memphysical import Memphysical
+from pyinformehw.dao.memorychip import Memorychip
+from pyinformehw.dao.diskdrive import Diskdrive
+from pyinformehw.dao.volume import Volume
+from pyinformehw.dao.benchmark import Benchmark
 
 def crea_registro(seccion, computer, mapa_campos):
     if seccion == 'COMPUTERSYSTEM':
-        return ComputerSystem(computer,mapa_campos)
+        return Computersystem(computer,mapa_campos)
     elif seccion == 'BASEBOARD':
-        return ComputerSystem(computer,mapa_campos)
+        return Baseboard(computer,mapa_campos)
     elif seccion == 'CPU':
-        return ComputerSystem(computer,mapa_campos)
+        return Cpu(computer,mapa_campos)
     elif seccion == 'MEMPHYSICAL':
-        return ComputerSystem(computer,mapa_campos)
+        return Memphysical(computer,mapa_campos)
     elif seccion == 'MEMORYCHIP':
-        return ComputerSystem(computer,mapa_campos)
+        return Memorychip(computer,mapa_campos)
     elif seccion == 'DISKDRIVE':
-        return ComputerSystem(computer,mapa_campos)
+        return Diskdrive(computer,mapa_campos)
     elif seccion == 'VOLUME':
-        return ComputerSystem(computer,mapa_campos)
-
+        return Volume(computer,mapa_campos)
 
 
 def run():
@@ -40,8 +46,9 @@ def run():
         computer = file_name_parts[2]
 
         #Actualizamos el usuario o lo insertamos nuevo
-        registro_user = session.query(User).filter(User.name == user).all()
-        if len(registro_user) > 0:
+        registro_user = session.query(User).filter(User.name == user).first()
+        if registro_user is not None:
+            print(registro_user)
             registro_user.computer = computer
             session.add(registro_user)
         else:
@@ -83,6 +90,25 @@ def run():
                 registro.leer_linea(linea)
                 #insertamos en BBDD
                 session.add(registro)
+
+    #Recorremos todos los ficheros de la carpeta que cumplen el patron
+    for file_name in glob.glob('benchmark_*.txt'):
+        print('Procesando el fichero:', file_name)
+        
+        #dividimos el nombre para saber maquina y fecha
+        file_name_parts = file_name.replace('.','_').split('_')
+        computer = file_name_parts[1]
+        fecha = file_name_parts[2]
+
+        #leemos el fichero linea a linea, procesando la cabecera de seccion, la linea de titulos y los datos
+        fichero = codecs.open(file_name,'r','utf_8')
+        
+        lineas = fichero.readlines()
+        for linea in lineas:
+            valores = linea.replace('"','').split(',')
+            registro_benckmark = Benchmark(computer,fecha,valores[0],valores[1] )
+            session.add(registro_benckmark)
+
 
     session.commit()
     session.close()
