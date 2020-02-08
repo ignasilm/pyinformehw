@@ -1,7 +1,7 @@
 import glob
 from os import chdir
 import codecs
-from pyinformehw.dao.base import Session, engine, Base
+from pyinformehw.dao.base import Session, engine, Base, borrar_todo, exportar
 from pyinformehw.dao.user import User
 from pyinformehw.dao.computersystem import Computersystem
 from pyinformehw.dao.baseboard import Baseboard
@@ -11,6 +11,8 @@ from pyinformehw.dao.memorychip import Memorychip
 from pyinformehw.dao.diskdrive import Diskdrive
 from pyinformehw.dao.volume import Volume
 from pyinformehw.dao.benchmark import Benchmark
+from pyinformehw.dao.diskmodel import Diskmodel
+
 
 def crea_registro(seccion, computer, mapa_campos):
     if seccion == 'COMPUTERSYSTEM':
@@ -33,6 +35,13 @@ def run():
     print('Iniciamos ejecucion de PyInformeHW')
 
     Base.metadata.create_all(engine)
+
+    #Borramos todos los datos de las tablas
+    session = Session()
+    borrar_todo(engine.connect())
+    session.commit()
+    session.close()
+
     session = Session()
 
     chdir('./ficherosEntrada')
@@ -46,15 +55,13 @@ def run():
         computer = file_name_parts[2]
 
         #Actualizamos el usuario o lo insertamos nuevo
-        registro_user = session.query(User).filter(User.name == user).first()
+        registro_user = session.query(User).filter(User.name == user).filter(User.computer == computer).first()
         if registro_user is not None:
-            print(registro_user)
-            registro_user.computer = computer
-            session.add(registro_user)
+            print('Usuario ya encontrado:',registro_user.name, '-',registro_user.computer)
         else:
-            registro_user = User(user,'')
-            registro_user.computer = computer
+            registro_user = User(user, computer)
             session.add(registro_user)
+            print('Nuevo usuario insertado:',registro_user.name, '-',registro_user.computer)
 
         #leemos el fichero linea a linea, procesando la cabecera de seccion, la linea de titulos y los datos
         seccion = ''
@@ -109,6 +116,15 @@ def run():
             registro_benckmark = Benchmark(computer,fecha,valores[0],valores[1] )
             session.add(registro_benckmark)
 
+    session.commit()
+    session.close()
+
+    session = Session()
+
+    #Actualizamos la tabla de modelos de discos por si ha entrado alguno nuevo
+    Diskmodel.actualizar_diskmodel(engine.connect())
 
     session.commit()
     session.close()
+
+    exportar('../InformeHW.xlsx')
