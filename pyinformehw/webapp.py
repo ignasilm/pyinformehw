@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 import pandas as pd;
-from dao.base import Session, engine, Base, borrar_todo, exportar
+from pyinformehw.dao.base import Session, engine, Base, borrar_todo, exportar
 
 app = Flask(__name__)
 
@@ -13,6 +13,12 @@ def html_table():
 
     return render_template('lista.html',  tables=[db_df.to_html(classes='data')], titles=db_df.columns.values)
 
+#Si se ejecuta el package arranca por este metodo
+def run():
+    print('Iniciamos ejecucion de PyInformeHW Web')
+    app.run()
 
+
+#Si se ejecuta el modulo directamente arranca por este paso
 if __name__ == '__main__':
     app.run()
