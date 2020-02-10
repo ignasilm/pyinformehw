@@ -2,8 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-pyinformehw/__pycache__/*
-pyinformehw/dao/__pycache__/*
+pyinformehw/__pycache__/*.*
+pyinformehw/dao/__pycache__/*.*
 
 # C extensions
 *.so
@@ -135,5 +135,6 @@ ficherosEntrada/info_*.txt
 InformeHW.xlsx
 docs/Diferencias INDICADORES_HEADCOUNT - dic18.xlsx
 pyinformehw/data/pyinformehw.db
+
 
 
