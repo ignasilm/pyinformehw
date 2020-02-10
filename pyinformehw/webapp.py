@@ -11,7 +11,8 @@ def html_table():
     db_df = pd.read_sql_query("SELECT * FROM informehw;", engine)
     #db_df.to_html(header="true", table_id="table")
 
-    return render_template('lista.html',  tables=[db_df.to_html(classes='data')], titles=db_df.columns.values)
+    #return render_template('lista.html',  tables=[db_df.to_html(classes='data')], titles=db_df.columns.values)
+    return render_template('lista_wisdom.html',  tables=[db_df.to_dict('index')], titles=db_df.columns.values)
 
 #Si se ejecuta el package arranca por este metodo
 def run():
