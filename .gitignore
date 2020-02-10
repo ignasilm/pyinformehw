@@ -138,3 +138,20 @@ pyinformehw/data/pyinformehw.db
 
 
 
+.vscode/settings.json
+PyInformeHW.code-workspace
+PyInformeHW.code-workspace.bak
+pyinformehw/__pycache__/__init__.cpython-38.pyc
+pyinformehw/__pycache__/__main__.cpython-38.pyc
+pyinformehw/__pycache__/app.cpython-38.pyc
+pyinformehw/dao/__pycache__/__init__.cpython-38.pyc
+pyinformehw/dao/__pycache__/base.cpython-38.pyc
+pyinformehw/dao/__pycache__/baseboard.cpython-38.pyc
+pyinformehw/dao/__pycache__/benchmark.cpython-38.pyc
+pyinformehw/dao/__pycache__/computersystem.cpython-38.pyc
+pyinformehw/dao/__pycache__/cpu.cpython-38.pyc
+pyinformehw/dao/__pycache__/diskdrive.cpython-38.pyc
+pyinformehw/dao/__pycache__/memorychip.cpython-38.pyc
+pyinformehw/dao/__pycache__/memphysical.cpython-38.pyc
+pyinformehw/dao/__pycache__/user.cpython-38.pyc
+pyinformehw/dao/__pycache__/volume.cpython-38.pyc
