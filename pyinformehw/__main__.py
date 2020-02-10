@@ -1,5 +1,5 @@
-from pyinformehw import app
+from pyinformehw import app, webapp
 
 if __name__ == '__main__':
-    app.run()
-    
+    #app.run()
+    webapp
