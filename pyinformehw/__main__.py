@@ -1,5 +1,6 @@
-from pyinformehw import app, webapp
+from pyinformehw import dashapp
 
 if __name__ == '__main__':
     #app.run()
-    webapp.run()
+    #webapp.run()
+    dashapp.run()
